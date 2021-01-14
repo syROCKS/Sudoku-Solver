@@ -3,6 +3,19 @@ using namespace std;
 
 int sudoku[9][9];
 
+void sudokuInput();
+void sudokuOutput();
+int checkColumn(int column, int number);
+int checkRow(int row, int number);
+
+int main() {
+    freopen("sudokuInput.txt","r",stdin);
+    freopen("sudokuOutput.txt","w",stdout);
+    sudokuInput();
+    sudokuOutput();
+    return 0;
+}
+
 void sudokuInput() {
     for(int i=0 ; i<9 ; i++) {
         for(int j=0 ; j<9 ; j++) {
@@ -11,7 +24,7 @@ void sudokuInput() {
     }
 }
 
-void sudokuDisplay() {
+void sudokuOutput() {
     int k,l=1;
     for(int i=0 ; i<9 ; i++) {
         k=1;
@@ -36,10 +49,21 @@ void sudokuDisplay() {
     }
 }
 
-int main() {
-    freopen("sudokuInput.txt","r",stdin);
-    freopen("sudokuOutput.txt","w",stdout);
-    sudokuInput();
-    sudokuDisplay();
+int checkColumn(int column, int number) {
+    for(int row=0 ; row<9 ; row++) {
+        if(sudoku[row][column]==number) {
+            return 1;
+        }
+    }
     return 0;
 }
+
+int checkRow(int row, int number) {
+    for(int column=0 ; column<9 ; column++) {
+        if(sudoku[row][column]==number) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
