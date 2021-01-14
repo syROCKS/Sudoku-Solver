@@ -5,17 +5,23 @@ int sudoku[9][9];
 
 void sudokuInput();
 void sudokuOutput();
-int checkColumn(int column, int number);
-int checkRow(int row, int number);
-int checkBox(int row, int column, int number);
-int emptySlot();
-int correctSlot(int row, int column , int number);
+bool checkColumn(int column, int number);
+bool checkRow(int row, int number);
+bool checkBox(int row, int column, int number);
+int emptySlot(int &row, int &column);
+bool correctSlot(int row, int column , int number);
+int solveSudoku();
 
 int main() {
     freopen("sudokuInput.txt","r",stdin);
     freopen("sudokuOutput.txt","w",stdout);
     sudokuInput();
-    sudokuOutput();
+    if(solveSudoku()==1) {
+        sudokuOutput();
+    }
+    else {
+        cout<<"Not Possible!";
+    }
     return 0;
 }
 
@@ -52,40 +58,40 @@ void sudokuOutput() {
     }
 }
 
-int checkColumn(int column, int number) {
+bool checkColumn(int column, int number) {
     for(int row=0 ; row<9 ; row++) {
         if(sudoku[row][column]==number) {
-            return 1;
+            return true;
         }
     }
-    return 0;
+    return false;
 }
 
-int checkRow(int row, int number) {
+bool checkRow(int row, int number) {
     for(int column=0 ; column<9 ; column++) {
         if(sudoku[row][column]==number) {
-            return 1;
+            return true;
         }
     }
-    return 0;
+    return false;
 }
 
-int checkBox(int row, int column, int number) {
+bool checkBox(int row, int column, int number) {
     int ROW = row - row%3;
     int COLUMN = column - column%3;
     for(int i=0 ; i<3 ; i++) {
         for(int j=0 ; j<3 ; j++) {
             if(sudoku[ROW + i][COLUMN + j]==number) {
-                return 1;
+                return true;
             }
         }
     }
-    return 0;
+    return false;
 }
 
-int emptySlot() {
-    for(int row=0 ; row<9 ; row++) {
-        for(int column=0 ; column<9 ; column++) {
+int emptySlot(int &row, int &column) {
+    for(row=0 ; row<9 ; row++) {
+        for(column=0 ; column<9 ; column++) {
             if(sudoku[row][column]==0) {
                 return 1;
             }
@@ -94,10 +100,23 @@ int emptySlot() {
     return 0;
 }
 
-int correctSlot(int row, int column , int number) {
-    if(checkColumn(column,number) || checkRow(row,number) || checkBox(row,column,number)) {
-        return 0;
-    }
-    return 1;
+bool correctSlot(int row, int column , int number) {
+    return !(checkColumn(column,number) || checkRow(row,number) || checkBox(row,column,number));
 }
 
+int solveSudoku() {
+    int row,column;
+    if(!emptySlot(row,column)) {
+        return 1;
+    }
+    for(int number=1 ; number<=9 ; number++) {
+        if(correctSlot(row,column,number)) {
+            sudoku[row][column]=number;
+            if(solveSudoku()) {
+                return 1;
+            }
+            sudoku[row][column]=0;
+        }
+    }
+    return 0;
+}
