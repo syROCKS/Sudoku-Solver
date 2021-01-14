@@ -7,6 +7,9 @@ void sudokuInput();
 void sudokuOutput();
 int checkColumn(int column, int number);
 int checkRow(int row, int number);
+int checkBox(int row, int column, int number);
+int emptySlot();
+int correctSlot(int row, int column , int number);
 
 int main() {
     freopen("sudokuInput.txt","r",stdin);
@@ -65,5 +68,36 @@ int checkRow(int row, int number) {
         }
     }
     return 0;
+}
+
+int checkBox(int row, int column, int number) {
+    int ROW = row - row%3;
+    int COLUMN = column - column%3;
+    for(int i=0 ; i<3 ; i++) {
+        for(int j=0 ; j<3 ; j++) {
+            if(sudoku[ROW + i][COLUMN + j]==number) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
+int emptySlot() {
+    for(int row=0 ; row<9 ; row++) {
+        for(int column=0 ; column<9 ; column++) {
+            if(sudoku[row][column]==0) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
+int correctSlot(int row, int column , int number) {
+    if(checkColumn(column,number) || checkRow(row,number) || checkBox(row,column,number)) {
+        return 0;
+    }
+    return 1;
 }
 
