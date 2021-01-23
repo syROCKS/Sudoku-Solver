@@ -16,7 +16,7 @@ int main() {
     freopen("sudokuInput.txt","r",stdin);
     freopen("sudokuOutput.txt","w",stdout);
     sudokuInput();
-    if(solveSudoku()==1) {
+    if(solveSudoku()) {
         sudokuOutput();
     }
     else {
@@ -39,21 +39,13 @@ void sudokuOutput() {
         k=1;
         for(int j=0 ; j<9 ; j++) {
             cout<<sudoku[i][j]<<" ";
-            if(k==3 || k==6) {
-                cout<<"| ";
-                k++;
-            }       
-            else {
-                k++;
-            }     
+            if(k==3 || k==6)
+                cout<<"| ";      
+            k++;    
         }
-        if(l==3 || l==6) {
+        if(l==3 || l==6)
             cout<<"\n------ ------- ------";
-            l++;
-        }       
-        else {
-            l++;
-        }  
+        l++;        
         cout<<endl;
     }
 }
